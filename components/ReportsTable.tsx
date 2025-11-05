@@ -15,9 +15,10 @@ import StatusBadge from "./StatusBadge";
 import { formatDate, getSpinnerColor } from "@/lib/status-utils";
 import { useEffect, useEffectEvent, useState } from "react";
 import { useUser } from "@stackframe/stack";
+import { scraping_jobs } from "@prisma/client";
 
 export default function ReportsTable() {
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState<scraping_jobs[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();

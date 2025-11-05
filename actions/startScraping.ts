@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { buildPerplexityPrompt } from "@/prompts/perplexity";
 import { stackServerApp } from "@/stack/server";
 import { retryAnalysisOnly } from "./runAnalysis";
+import { scraping_jobs } from "@prisma/client";
 
 if (!process.env.BRIGHTDATA_API_KEY) {
   throw new Error("BRIGHTDATA_API_KEY is not set");
@@ -23,7 +24,7 @@ const startScraping = async (
   }
   const userId = serverUser.id;
 
-  let job;
+  let job : scraping_jobs;
   let jobId: string;
   if (existingJobId) {
     // Check if we can use smart retry (analysis only)

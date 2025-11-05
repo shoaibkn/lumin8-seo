@@ -38,6 +38,7 @@ import {
 import { useUser } from "@stackframe/stack";
 import { fetcher } from "@/lib/fetcher";
 import useSWR from "swr";
+import { scraping_jobs } from "@prisma/client";
 
 export default function ReportPage({
   params,
@@ -46,7 +47,7 @@ export default function ReportPage({
 }) {
   const [id, setId] = React.useState<string | null>(null);
   const user = useUser();
-  const [job, setJob] = useState(undefined);
+  const [job, setJob] = useState<scraping_jobs | undefined>(undefined);
   const [isPending, startTransition] = useTransition();
   const [retryError, setRetryError] = useState<string | null>(null);
   const [notFound, setNotFound] = useState<boolean>(false);
@@ -81,6 +82,7 @@ export default function ReportPage({
 
     startTransition(async () => {
       try {
+        //@ts-ignore
         const result = await startScraping(job.originalPrompt, job.id);
         if (result.ok) {
           if (result.smartRetry) {
