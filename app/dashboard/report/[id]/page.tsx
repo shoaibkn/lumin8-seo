@@ -37,9 +37,6 @@ import {
 } from "@/lib/status-utils";
 import { useUser } from "@stackframe/stack";
 import { scraping_jobs } from "@prisma/client";
-import useReportStatus from "@/hooks/use-report-status";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/queryClient";
 import { fetcher } from "@/lib/fetcher";
 import useSWR from "swr";
 
@@ -78,35 +75,6 @@ export default function ReportPage({
     if (paramsUnwrapped) updateId();
   }, [paramsUnwrapped]);
 
-  // const fetchReports = useEffectEvent(async () => {
-  //   try {
-  //     console.log(`/api/scraping-job?userId=${user?.id}&id=${id}`);
-  //     const url = `/api/scraping-job?userId=${user?.id}&id=${id}`;
-  //     console.log("generating report");
-  //     const response = await fetch(url, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-
-  //     const data = await response.json();
-  //     if (data.data) {
-  //       setJob(data.data[0]);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // });
-
-  // useEffect(() => {
-  //   // console.log(user);
-  //   if (user && id) {
-  //     fetchReports();
-  //     // testProgress(id);
-  //   }
-  // }, [user, id]);
-
   const handleRetry = () => {
     if (!job) return;
 
@@ -115,16 +83,15 @@ export default function ReportPage({
     startTransition(async () => {
       try {
         const result = await startScraping(job.originalPrompt, job.id);
-        // console.log(result);
         if (result.ok) {
           if (result.smartRetry) {
             // Smart retry - stay on same page, job will update in real-time
             console.log("Smart retry initiated - staying on current page");
             // Don't navigate anywhere, just let the page update via real-time data
             return; // Explicitly return to complete the transition
-          } else if (result.data?.snapshot_id) {
+          } else if (result.data[0]?.snapshot_id) {
             // Full retry with new snapshot - redirect to new report page
-            router.replace(`/dashboard/report/${result.data.jobId}`);
+            router.replace(`/dashboard/report/${result.data[0].id}`);
             return; // Explicitly return to complete the transition
           }
         } else {

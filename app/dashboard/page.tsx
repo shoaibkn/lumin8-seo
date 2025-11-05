@@ -1,10 +1,8 @@
 "use client";
 
-// import startScraping from "@/actions/startScraping";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import { BarChart3, Loader2 } from "lucide-react";
-// import ReportsTable from "@/components/ReportsTable";
+import { BarChart3 } from "lucide-react";
 import { CreateReportDialog } from "@/components/CreateReportDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import TopupCard from "@/components/TopupCard";
@@ -25,10 +23,9 @@ function Dashboard() {
       return;
     }
     const data = {
-      id: user.id,
-      email: user.primaryEmail,
-      emailVerified: true,
-      name: user.displayName, // Assuming name is required
+      id: user.id || undefined,
+      email: user.primaryEmail || undefined,
+      name: user.displayName || undefined, // Assuming name is required
     };
     updateUser(data);
   });

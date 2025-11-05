@@ -54,6 +54,7 @@ export const runAnalysis = async (jobId: string) => {
 
     // Step 1: Generate comprehensive SEO report using structured output
     const scrapingData = Array.isArray(job.result) ? job.result : [job.result];
+    //@ts-ignore
     const analysisPrompt = buildAnalysisPrompt(scrapingData);
 
     console.log("Generating SEO report for job:", jobId);

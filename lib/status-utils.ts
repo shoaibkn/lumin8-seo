@@ -114,7 +114,7 @@ export function getStatusConfig(status: string) {
   );
 }
 
-export function formatDate(dateString: string): string {
+export function formatDate(dateString: Date): string {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", {
     year: "numeric",
@@ -125,6 +125,6 @@ export function formatDate(dateString: string): string {
   });
 }
 
-export function formatDateTime(timestamp: number): string {
+export function formatDateTime(timestamp: Date): string {
   return new Date(timestamp).toLocaleString();
 }

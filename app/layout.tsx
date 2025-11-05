@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackClientApp } from "../stack/client";
-import { DM_Sans, Geist, Geist_Mono, Outfit } from "next/font/google";
+import { DM_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import Header from "@/components/global/Header";
 import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/global/Navbar";
 import { Suspense } from "react";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/queryClient";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",

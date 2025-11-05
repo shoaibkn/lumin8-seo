@@ -71,6 +71,7 @@ export default function LoginPage() {
     try {
       const result = await app.sendForgotPasswordEmail(email);
       if (result?.status === "error") {
+        //@ts-ignore
         if (result.error.code === "user_not_found") {
           // For security reasons, don't reveal if a user exists or not
           setError("");
@@ -365,7 +366,7 @@ export default function LoginPage() {
             <div className="text-center text-sm text-muted-foreground">
               {currentView === "login" && (
                 <>
-                  Don't Have An Account?{" "}
+                  Don&apos;t Have An Account?{" "}
                   <Button
                     variant="link"
                     className="p-0 h-auto text-sm hover:text-opacity-80 font-medium cursor-pointer"
