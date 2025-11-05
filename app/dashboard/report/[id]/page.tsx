@@ -36,7 +36,6 @@ import {
   formatDateTime,
 } from "@/lib/status-utils";
 import { useUser } from "@stackframe/stack";
-import { scraping_jobs } from "@prisma/client";
 import { fetcher } from "@/lib/fetcher";
 import useSWR from "swr";
 
@@ -47,7 +46,7 @@ export default function ReportPage({
 }) {
   const [id, setId] = React.useState<string | null>(null);
   const user = useUser();
-  const [job, setJob] = useState<scraping_jobs | undefined>(undefined);
+  const [job, setJob] = useState(undefined);
   const [isPending, startTransition] = useTransition();
   const [retryError, setRetryError] = useState<string | null>(null);
   const [notFound, setNotFound] = useState<boolean>(false);

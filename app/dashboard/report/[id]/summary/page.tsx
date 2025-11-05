@@ -16,7 +16,7 @@ import {
   AIChatUpsellCard,
 } from "./ui";
 import { useUser } from "@stackframe/stack";
-import { scraping_jobs } from "@prisma/client";
+
 // import AIChat from "@/components/AIChat";
 
 interface ReportSummaryProps {
@@ -27,9 +27,7 @@ export default function ReportSummary({ params }: ReportSummaryProps) {
   const { id } = React.use(params);
   const user = useUser();
 
-  const [job, setJob] = React.useState<scraping_jobs | undefined | null>(
-    undefined,
-  );
+  const [job, setJob] = React.useState(undefined);
   const [seoReport, setSeoReport] = React.useState<SeoReport | undefined>(
     undefined,
   );

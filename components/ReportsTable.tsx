@@ -14,11 +14,10 @@ import { Loader2, FileText, Plus, TrendingUp, Trash2 } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 import { formatDate, getSpinnerColor } from "@/lib/status-utils";
 import { useEffect, useEffectEvent, useState } from "react";
-import { scraping_jobs } from "@prisma/client";
 import { useUser } from "@stackframe/stack";
 
 export default function ReportsTable() {
-  const [jobs, setJobs] = useState<scraping_jobs[]>([]);
+  const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
