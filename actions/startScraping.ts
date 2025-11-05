@@ -5,7 +5,6 @@ import { buildPerplexityPrompt } from "@/prompts/perplexity";
 import { stackServerApp } from "@/stack/server";
 import { scraping_jobs } from "@prisma/client";
 import { retryAnalysisOnly } from "./runAnalysis";
-// import { retryAnalysisOnly } from "./runAnalysis";
 
 if (!process.env.BRIGHTDATA_API_KEY) {
   throw new Error("BRIGHTDATA_API_KEY is not set");
@@ -17,7 +16,6 @@ const startScraping = async (
   country: string = "IN",
 ) => {
   const serverUser = await stackServerApp.getUser();
-  // console.log("Server User:", serverUser);
   if (!serverUser) {
     return {
       ok: false,
@@ -25,17 +23,15 @@ const startScraping = async (
     };
   }
   const userId = serverUser.id;
-  // console.log("Starting scraping job for user:", userId);
 
   let job: scraping_jobs;
   let jobId: string;
   if (existingJobId) {
     // Check if we can use smart retry (analysis only)
-    const retryInfo = await canUseSmartRetry(existingJobId, serverUser.id);
+    const retryInfo = await canUseSmartRetry(existingJobId, userId);
     if (retryInfo.canRetryAnalysisOnly) {
       console.log("Using smart retry - analysis only for job:", existingJobId);
       // Import the retry analysis action
-      // const retryAnalysisOnly = (await import("../actions/runAnalysis")).retryAnalysisOnly;
       const result = await retryAnalysisOnly(existingJobId);
       if (result.ok) {
         return {
@@ -88,9 +84,6 @@ const startScraping = async (
   const encodedEndpoint = encodeURIComponent(ENDPOINT);
 
   const url = `https://api.brightdata.com/datasets/v3/trigger?dataset_id=gd_m7dhdot1vw9a7gc1n&endpoint=${encodedEndpoint}&format=json&uncompressed_webhook=true&include_errors=true`;
-
-  // const url =
-  //   "https://api.brightdata.com/datasets/v3/scrape?dataset_id=gd_m7dhdot1vw9a7gc1n&notify=false&include_errors=true";
 
   const perplexityPrompt = buildPerplexityPrompt(prompt);
 

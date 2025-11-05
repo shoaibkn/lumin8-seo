@@ -31,10 +31,6 @@ export const runAnalysis = async (jobId: string) => {
 
     if (!job.result) {
       console.error(`No scraping results found for job: ${jobId}`);
-      // await ctx.runMutation(api.scrapingJobs.failJob, {
-      //   jobId: args.jobId,
-      //   error: "No scraping results available for analysis",
-      // });
       await prisma.scraping_jobs.update({
         where: {
           id: jobId,
@@ -47,10 +43,6 @@ export const runAnalysis = async (jobId: string) => {
       return null;
     }
 
-    // Set job status to analyzing
-    // await ctx.runMutation(api.scrapingJobs.setJobToAnalyzing, {
-    //   jobId: args.jobId,
-    // });
     await prisma.scraping_jobs.update({
       where: {
         id: jobId,
@@ -67,10 +59,6 @@ export const runAnalysis = async (jobId: string) => {
     console.log("Generating SEO report for job:", jobId);
 
     // Save prompt into the database for debugging
-    // await ctx.runMutation(internal.scrapingJobs.saveOriginalPrompt, {
-    //   jobId: args.jobId,
-    //   prompt: analysisPrompt,
-    // });
     await prisma.scraping_jobs.update({
       where: {
         id: jobId,
@@ -89,20 +77,7 @@ export const runAnalysis = async (jobId: string) => {
       schema: seoReportSchema,
     });
 
-    // console.log("SEO report generated successfully:", {
-    //   entity_name: seoReport.meta.entity_name,
-    //   entity_type: seoReport.meta.entity_type,
-    //   confidence_score: seoReport.meta.confidence_score,
-    //   total_sources: seoReport.inventory.total_sources,
-    //   recommendations_count: seoReport.recommendations?.length || 0,
-    //   summary_score: seoReport.summary?.overall_score || 0,
-    // });
-
     // Step 2: Save the SEO report to the database
-    // await ctx.runMutation(internal.scrapingJobs.saveSeoReport, {
-    //   jobId: args.jobId,
-    //   seoReport: seoReport,
-    // });
     await prisma.scraping_jobs.update({
       where: { id: jobId },
       data: {
@@ -113,9 +88,6 @@ export const runAnalysis = async (jobId: string) => {
     console.log("SEO report saved for job:", jobId);
 
     // Step 3: Complete the job (mark as completed)
-    // await ctx.runMutation(internal.scrapingJobs.completeJob, {
-    //   jobId: args.jobId,
-    // });
     await prisma.scraping_jobs.update({
       where: { id: jobId },
       data: {
@@ -131,13 +103,6 @@ export const runAnalysis = async (jobId: string) => {
 
     // Set job status to failed when analysis fails
     try {
-      // await ctx.runMutation(api.scrapingJobs.failJob, {
-      //   jobId: args.jobId,
-      //   error:
-      //     error instanceof Error
-      //       ? error.message
-      //       : "Unknown error occurred during analysis",
-      // });
       await prisma.scraping_jobs.update({
         where: {
           id: jobId,
@@ -195,11 +160,6 @@ export const retryAnalysisOnly = async (jobId: string) => {
     console.error("Failed to retry analysis:", error);
 
     // Mark job as failed
-    // await convex.mutation(api.scrapingJobs.failJob, {
-    //   jobId: jobId as Id<"scrapingJobs">,
-    //   error:
-    //     error instanceof Error ? error.message : "Failed to retry analysis",
-    // });
     await prisma.scraping_jobs.update({
       where: {
         id: jobId,
