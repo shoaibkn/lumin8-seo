@@ -3,8 +3,8 @@
 import { prisma } from "@/lib/prisma";
 import { buildPerplexityPrompt } from "@/prompts/perplexity";
 import { stackServerApp } from "@/stack/server";
-import { scraping_jobs } from "@prisma/client";
 import { retryAnalysisOnly } from "./runAnalysis";
+import { scraping_jobs } from "@prisma/client";
 
 if (!process.env.BRIGHTDATA_API_KEY) {
   throw new Error("BRIGHTDATA_API_KEY is not set");
