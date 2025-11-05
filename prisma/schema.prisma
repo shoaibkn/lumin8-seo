@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Payment {
+  id                String             @id @default(dbgenerated("gen_random_uuid()"))
+  razorpayId        String             @unique
+  status            PaymentStatus
+  amount            Float
+  currency          String             @default("INR")
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime
+  WalletTransaction WalletTransaction?
+}
+
+model Wallet {
+  id                String              @id @default(dbgenerated("gen_random_uuid()"))
+  userId            String              @unique
+  balance           Float               @default(0)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime
+  user              user                @relation(fields: [userId], references: [id])
+  WalletTransaction WalletTransaction[]
+}
+
+model WalletTransaction {
+  id          String          @id @default(dbgenerated("gen_random_uuid()"))
+  walletId    String
+  type        TransactionType
+  amount      Float
+  description String?
+  paymentId   String?         @unique
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime
+  Payment     Payment?        @relation(fields: [paymentId], references: [id])
+  Wallet      Wallet          @relation(fields: [walletId], references: [id])
+}
+
+model scraping_jobs {
+  id             String    @id @default(dbgenerated("gen_random_uuid()"))
+  userId         String
+  originalPrompt String
+  analysisPrompt String?
+  snapshotId     String?
+  status         Status
+  result         Json?
+  seoReport      String?
+  error          String?
+  completedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now())
+  user           user      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  report_progress report_progress?
+
+  @@index([status, createdAt, userId])
+}
+
+model user {
+  id            String          @id
+  name          String
+  email         String          @unique
+  emailVerified Boolean         @default(false)
+  image         String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now())
+  Wallet        Wallet?
+  scraping_jobs scraping_jobs[]
+}
+
+model report_progress {
+  id        String        @id @default(dbgenerated("gen_random_uuid()"))
+  jobId     String        @unique
+  progress  Float
+  failed    Boolean       @default(false)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @default(now())
+  Job       scraping_jobs @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum Status {
+  PENDING
+  RUNNING
+  ANALYSING
+  COMPLETED
+  FAILED
+}
+
+enum TransactionType {
+  CREDIT
+  DEBIT
+}
