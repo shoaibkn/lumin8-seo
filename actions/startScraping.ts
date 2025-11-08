@@ -24,7 +24,7 @@ const startScraping = async (
   }
   const userId = serverUser.id;
 
-  let job : scraping_jobs;
+  let job: scraping_jobs;
   let jobId: string;
   if (existingJobId) {
     // Check if we can use smart retry (analysis only)
@@ -80,12 +80,22 @@ const startScraping = async (
   }
 
   // Include the job ID in the webhook URL as a query parameter
-  const ENDPOINT = `https://app.vrdexports.in/api/webhook?jobId=${jobId}`;
+  const ENDPOINT = `https://seo.lumin8.in/api/webhook?jobId=${jobId}`;
   const encodedEndpoint = encodeURIComponent(ENDPOINT);
 
   const url = `https://api.brightdata.com/datasets/v3/trigger?dataset_id=gd_m7dhdot1vw9a7gc1n&endpoint=${encodedEndpoint}&format=json&uncompressed_webhook=true&include_errors=true`;
 
   const perplexityPrompt = buildPerplexityPrompt(prompt);
+
+  // Set Job as running
+  await prisma.scraping_jobs.update({
+    where: {
+      id: jobId,
+    },
+    data: {
+      status: "RUNNING",
+    },
+  });
 
   try {
     const response = await fetch(url, {

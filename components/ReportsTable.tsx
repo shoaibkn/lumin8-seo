@@ -8,27 +8,47 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Loader2, FileText, Plus, TrendingUp, Trash2 } from "lucide-react";
+import isEqual from "lodash/isEqual";
+import {
+  Loader2,
+  FileText,
+  Plus,
+  TrendingUp,
+  Trash2,
+  LucideHourglass,
+} from "lucide-react";
 import StatusBadge from "./StatusBadge";
 import { formatDate, getSpinnerColor } from "@/lib/status-utils";
 import { useEffect, useEffectEvent, useState } from "react";
 import { useUser } from "@stackframe/stack";
 import { scraping_jobs } from "@prisma/client";
+import useSWR from "swr";
+
+const deepCompare = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 
 export default function ReportsTable() {
   const [jobs, setJobs] = useState<scraping_jobs[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [refetchInterval, setRefetchInterval] = useState<number>(0);
   const router = useRouter();
   const [deletingJobId, setDeletingJobId] = useState<string | null>(null);
-
   const user = useUser();
-
-  const fetchReports = useEffectEvent(async () => {
-    try {
-      const url = `/api/scraping-job?userId=${user?.id}`;
+  const { data, error, isLoading } = useSWR(
+    () => (user ? `/api/scraping-job?userId=${user?.id}` : null),
+    async (url) => {
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -36,44 +56,36 @@ export default function ReportsTable() {
         },
       });
       const data = await response.json();
-      console.log(data.data);
-      if (data.data) {
-        setJobs(data.data);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  });
+      setRefetchInterval(0);
+      return data.data;
+    },
+    { refreshInterval: refetchInterval },
+  );
 
   useEffect(() => {
-    if (user) {
-      fetchReports();
+    if (data) {
+      setJobs(data);
+      setLoading(false);
     }
-  }, [user]);
+  }, [data]);
 
-  const handleRowClick = (snapshotId: string | null) => {
-    if (snapshotId) {
-      router.push(`/dashboard/report/${snapshotId}`);
+  const handleRowClick = (jobId: string | null) => {
+    if (jobId) {
+      router.push(`/dashboard/report/${jobId}`);
     }
   };
 
   const handleDelete = async (e: React.MouseEvent, jobId: string) => {
     e.stopPropagation(); // Prevent row click
 
-    if (
-      !confirm(
-        "Are you sure you want to delete this report? This action cannot be undone.",
-      )
-    ) {
-      return;
-    }
-
     setDeletingJobId(jobId);
     try {
-      const response = await fetch(`/api/scrapingJobs/${jobId}`, {
+      const response = await fetch(`/api/scraping-job`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: jobId, userId: user?.id }),
       });
       if (!response.ok) {
         throw new Error(`Failed to delete job: ${response.statusText}`);
@@ -83,6 +95,7 @@ export default function ReportsTable() {
       alert("Failed to delete report. Please try again.");
     } finally {
       setDeletingJobId(null);
+      setRefetchInterval(500);
     }
   };
 
@@ -203,19 +216,43 @@ export default function ReportsTable() {
                   )}
                 </TableCell>
                 <TableCell className="py-4">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => handleDelete(e, job.id)}
-                    disabled={deletingJobId === job.id}
-                    className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive"
-                  >
-                    {deletingJobId === job.id ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Trash2 className="h-4 w-4" />
-                    )}
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => e.stopPropagation()}
+                        className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive"
+                      >
+                        {deletingJobId === job.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your account and remove your data from our
+                          servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={(e) => handleDelete(e, job.id)}
+                          disabled={deletingJobId === job.id}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </TableCell>
               </TableRow>
             ))}

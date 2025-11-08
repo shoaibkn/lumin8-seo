@@ -2,61 +2,111 @@
 import { useIsMobile } from "@/hooks/use-mobile";
 import React, { useEffect } from "react";
 import { Button } from "../ui/button";
-import { CirclePlus, CircleUserRound, Layers2 } from "lucide-react";
+import {
+  CircleUserRound,
+  Layers2,
+  LogIn,
+  PlusCircle,
+  Settings,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
-import path from "path";
 import Link from "next/link";
 import { CreateReportDrawer } from "../CreateReportDrawer";
+import { useUser } from "@stackframe/stack";
 
-type Props = {};
-
-function Navbar({}: Props) {
+function Navbar() {
   const pathName = usePathname();
   const [selectedNav, setSelectedNav] = React.useState<string>("");
-
+  const user = useUser();
   useEffect(() => {
-    switch (pathName) {
-      case "/dashboard":
-        setSelectedNav("dashboard");
-        break;
-      case "/profile":
-        setSelectedNav("profile");
-        break;
-      default:
-        setSelectedNav("");
+    console.log("Path", pathName.startsWith("/dashboard"));
+    if (pathName.startsWith("/dashboard")) {
+      setSelectedNav("dashboard");
+    } else if (pathName.startsWith("/profile")) {
+      setSelectedNav("profile");
     }
   }, [pathName]);
 
   const isMobile = useIsMobile();
+  if (pathName.startsWith("/login")) {
+    return null;
+  }
   return (
     <>
       {isMobile ? (
-        <nav className="flex flex-row sticky bottom-0 p-4 justify-between z-50">
-          <span className="p-2 flex flex-row gap-4 rounded-full bg-card/25 backdrop-blur supports-backdrop-filter:bg-card/45 border">
-            <Link href={"/dashboard"}>
-              <Button
-                size="icon"
-                className={`w-14 h-14 rounded-full  border ${selectedNav === "dashboard" ? "bg-primary " : "bg-primary-foreground"}`}
-              >
-                <Layers2
-                  className={`size-6 ${selectedNav === "dashboard" ? "text-primary-foreground" : "text-primary"}`}
-                  strokeWidth={1.5}
-                />
-              </Button>
-            </Link>
-            <Link href={"/profile"}>
-              <Button
-                size="icon"
-                className={`w-14 h-14 rounded-full  border ${selectedNav === "profile" ? "bg-primary" : "bg-primary-foreground"}`}
-              >
-                <CircleUserRound
-                  className={`size-6 ${selectedNav === "profile" ? "text-primary-foreground" : "text-primary"}`}
-                  strokeWidth={1.5}
-                />
-              </Button>
-            </Link>
-          </span>
-          <CreateReportDrawer />
+        <nav className="flex flex-row fixed bottom-0 p-4 justify-between z-50 w-full">
+          {pathName !== "/" ? (
+            <>
+              <span className="p-2 flex flex-row gap-2 rounded-xl bg-card/25 backdrop-blur supports-backdrop-filter:bg-card/45 border">
+                <Link href={"/dashboard"}>
+                  <Button
+                    className={`text-foreground border ${selectedNav === "dashboard" ? "bg-primary text-primary-foreground" : "bg-primary-foreground text-primary"}`}
+                  >
+                    <Layers2 className={`size-6`} strokeWidth={1.5} />
+                    Dashboard
+                  </Button>
+                </Link>
+                <Link href={"/profile"}>
+                  <Button
+                    className={`text-foreground border ${selectedNav === "profile" ? "bg-primary text-primary-foreground" : "bg-primary-foreground text-primary"}`}
+                  >
+                    <CircleUserRound className={`size-6`} strokeWidth={1.5} />
+                    Profile
+                  </Button>
+                </Link>
+              </span>
+              <span className="p-2 flex flex-row gap-2 rounded-xl bg-card/25 backdrop-blur supports-backdrop-filter:bg-card/45 border">
+                <CreateReportDrawer />
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="p-2 flex flex-row justify-between w-fit rounded-xl bg-card/25 backdrop-blur supports-backdrop-filter:bg-card/45 border">
+                <div className="flex flex-row gap-2">
+                  <Link href={"#features"}>
+                    <Button
+                      className={`text-foreground border ${selectedNav === "dashboard" ? "bg-primary " : "bg-primary-foreground"}`}
+                    >
+                      Features
+                    </Button>
+                  </Link>
+                  <Link href={"#pricing"}>
+                    <Button
+                      className={`text-foreground border ${selectedNav === "profile" ? "bg-primary" : "bg-primary-foreground"}`}
+                    >
+                      Pricing
+                    </Button>
+                  </Link>
+                  <Link href={"#faq"}>
+                    <Button
+                      className={`text-foreground border ${selectedNav === "profile" ? "bg-primary" : "bg-primary-foreground"}`}
+                    >
+                      FAQ
+                    </Button>
+                  </Link>
+                </div>
+              </span>
+              <span className="p-2 flex flex-row justify-between w-fit rounded-xl bg-card/25 backdrop-blur supports-backdrop-filter:bg-card/45 border">
+                {!user ? (
+                  <Link href={"/login"}>
+                    <Button variant={"default"} className={`border`}>
+                      <LogIn />
+                      Signin
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href={"/dashboard"}>
+                    <Button variant={"default"} className={`border`}>
+                      <Layers2 />
+                      App
+                    </Button>
+                  </Link>
+                )}
+              </span>
+            </>
+          )}
+
+          {/*<CreateReportDrawer />*/}
         </nav>
       ) : null}
     </>

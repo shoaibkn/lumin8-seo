@@ -46,10 +46,7 @@ function Dashboard() {
         <span className="text-4xl">Hi {user?.displayName}</span>,<br /> How can
         I help you today
       </h1>
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 -z-10">
-        <TopupCard />
-        <UsageStatisticsCard />
-      </section>
+      <TopupCard />
       <section className="mt-12">
         <div className="flex flex-row justify-between items-center mb-8">
           <div className="flex flex-col items-start gap-2">

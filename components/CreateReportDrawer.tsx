@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
@@ -10,25 +9,42 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { CirclePlus, FileText, Plus, PlusCircle } from "lucide-react";
+import { FileText, Plus, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { CountrySelector } from "./CountrySelector";
 import { useRouter } from "next/navigation";
+import startScraping from "@/actions/startScraping";
 
 export function CreateReportDrawer() {
   const [prompt, setPrompt] = useState("");
-  const [country, setCountry] = useState("in");
+  const [country, setCountry] = useState("IN");
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {};
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await startScraping(prompt, undefined, country);
+      if (!response.ok) {
+        throw new Error("Failed to generate report");
+      }
+      console.log(response);
+      // const data = await response.json();
+      router.push(`/dashboard/report/${response.jobId}`);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button size="icon" className={`w-18 h-18 rounded-full`}>
-          <CirclePlus className="size-8" strokeWidth={1.5} />
+        <Button variant={"default"} className={`border`}>
+          <PlusCircle />
+          New SEO
         </Button>
       </DrawerTrigger>
       <DrawerContent className="p-4">
@@ -84,29 +100,29 @@ export function CreateReportDrawer() {
               <span>Comprehensive Insights</span>
             </div>
           </div>
+          <DrawerFooter className="flex flex-col gap-2">
+            <Button
+              type="submit"
+              size="lg"
+              className="h-12 px-6 md:px-8 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 border-0 shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 group font-semibold w-full "
+              disabled={isLoading || !prompt.trim()}
+            >
+              {isLoading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin mr-3" />
+                  <span className="hidden lg:inline">Generating Report...</span>
+                  <span className="lg:hidden">Generating...</span>
+                </>
+              ) : (
+                <>
+                  <Plus className="w-5 h-5 mr-3 group-hover:rotate-90 transition-transform duration-300" />
+                  <span className="hidden lg:inline">Generate Report</span>
+                  <span className="lg:hidden">Generate</span>
+                </>
+              )}
+            </Button>
+          </DrawerFooter>
         </form>
-        <DrawerFooter className="flex flex-col gap-2">
-          <Button
-            type="submit"
-            size="lg"
-            className="h-12 px-6 md:px-8 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 border-0 shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 group font-semibold w-full "
-            disabled={isLoading || !prompt.trim()}
-          >
-            {isLoading ? (
-              <>
-                <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin mr-3" />
-                <span className="hidden lg:inline">Generating Report...</span>
-                <span className="lg:hidden">Generating...</span>
-              </>
-            ) : (
-              <>
-                <Plus className="w-5 h-5 mr-3 group-hover:rotate-90 transition-transform duration-300" />
-                <span className="hidden lg:inline">Generate Report</span>
-                <span className="lg:hidden">Generate</span>
-              </>
-            )}
-          </Button>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

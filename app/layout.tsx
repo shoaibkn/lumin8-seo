@@ -15,7 +15,7 @@ const dmSans = DM_Sans({
 });
 
 const outfit = Outfit({
-  variable: "--font-outfit",
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 

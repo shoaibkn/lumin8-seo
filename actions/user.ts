@@ -11,25 +11,57 @@ export const updateUser = async (user: {
   updated_at?: Date | undefined;
   deleted_at?: Date | undefined;
 }) => {
-  if (
-    user.id === undefined ||
-    user.email === undefined ||
-    user.name === undefined
-  ) {
-    throw new Error("ID, Email and name are required");
+  try {
+    if (
+      user.id === undefined ||
+      user.email === undefined ||
+      user.name === undefined
+    ) {
+      throw new Error("ID, Email and name are required");
+    }
+
+    const userExists = await prisma.user.findUnique({
+      where: {
+        id: user.id,
+      },
+    });
+    let newUser: boolean = false;
+    if (!userExists) {
+      newUser = true;
+    }
+
+    const createdUser = await prisma.user.upsert({
+      where: { id: user.id },
+      create: {
+        id: user.id,
+        email: user.email,
+        emailVerified: true,
+        name: user.name,
+      },
+      update: {
+        email: user.email,
+        emailVerified: true,
+        name: user.name,
+      },
+    });
+
+    if (newUser && createdUser) {
+      try {
+        await prisma.walletTransactions.create({
+          data: {
+            metaInfo: { type: "PROMO RECHARGE - 500" },
+            paymentFlow: "PROMO",
+            type: "CREDIT",
+            userId: user.id,
+            amount: 500,
+            description: "PROMO for New User",
+          },
+        });
+      } catch (error) {
+        console.log("Unable to Add Promo Transaction for New User", error);
+      }
+    }
+  } catch (error) {
+    console.log("Unable to Update User", error);
   }
-  await prisma.user.upsert({
-    where: { id: user.id },
-    create: {
-      id: user.id,
-      email: user.email,
-      emailVerified: true,
-      name: user.name,
-    },
-    update: {
-      email: user.email,
-      emailVerified: true,
-      name: user.name,
-    },
-  });
 };

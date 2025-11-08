@@ -4,17 +4,16 @@ import { motion } from "motion/react";
 import { ThemeToggle } from "../ThemeToggle";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useStackApp, useUser } from "@stackframe/stack";
+
+import { useUser } from "@stackframe/stack";
+import LogoutDialog from "./LogoutDialog";
 
 const Header = () => {
-  const session: [] = []; //Change to proper session fetching
   const pathName = usePathname();
   const isMobile = useIsMobile();
-  const app = useStackApp();
   const user = useUser();
 
   return (
@@ -24,7 +23,7 @@ const Header = () => {
         className={`fixed w-full z-50 ${isMobile ? "top-0" : "top-4"}`}
       >
         <div
-          className={`container md:w-7xl px-4 py-4 flex items-center justify-between mx-auto  gap-2
+          className={`container md:w-7xl  px-4 py-4 flex items-center justify-between mx-auto  gap-2
        bg-card/25 backdrop-blur supports-backdrop-filter:bg-card/45 ${!isMobile ? "rounded-full border h-16" : "h-20"}`}
         >
           <motion.div
@@ -41,28 +40,27 @@ const Header = () => {
             </Link>
           </motion.div>
           <div className="hidden md:flex items-center space-x-2">
-            {!user &&
-              NAVIGATION.links.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="hover:text-primary transition-colors"
-                >
-                  <Button variant={"ghost"} className="rounded-full">
-                    {link.name}
-                  </Button>
-                </Link>
-              ))}
+            {NAVIGATION.links.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`hover:text-primary transition-colors ${pathName !== "/" && "hidden"}`}
+              >
+                <Button variant={"ghost"} className="rounded-full">
+                  {link.name}
+                </Button>
+              </Link>
+            ))}
             {user &&
               NAVIGATION.appLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="hover:text-primary transition-colors"
+                  className={`hover:text-primary transition-colors`}
                 >
                   <Button variant={"ghost"} className="rounded-full">
                     <link.icon />
-                    {link.name}
+                    {pathName !== "/" && link.name}
                   </Button>
                 </Link>
               ))}
@@ -74,16 +72,7 @@ const Header = () => {
                 </Button>
               </Link>
             )}
-            {user && (
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full"
-                onClick={() => user.signOut()}
-              >
-                <LogOut />
-              </Button>
-            )}
+            {/*{user && <LogoutDialog />}*/}
             {!user && (
               <Button className="rounded-full">
                 {NAVIGATION.cta.getStarted}
@@ -93,6 +82,7 @@ const Header = () => {
           <span className="md:hidden">
             <ThemeToggle />
           </span>
+          {user && <LogoutDialog />}
         </div>
       </motion.nav>
     </header>

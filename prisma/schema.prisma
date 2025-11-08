@@ -7,40 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Payment {
-  id                String             @id @default(dbgenerated("gen_random_uuid()"))
-  razorpayId        String             @unique
-  status            PaymentStatus
-  amount            Float
-  currency          String             @default("INR")
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime
-  WalletTransaction WalletTransaction?
-}
-
-model Wallet {
-  id                String              @id @default(dbgenerated("gen_random_uuid()"))
-  userId            String              @unique
-  balance           Float               @default(0)
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime
-  user              user                @relation(fields: [userId], references: [id])
-  WalletTransaction WalletTransaction[]
-}
-
-model WalletTransaction {
-  id          String          @id @default(dbgenerated("gen_random_uuid()"))
-  walletId    String
-  type        TransactionType
-  amount      Float
-  description String?
-  paymentId   String?         @unique
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime
-  Payment     Payment?        @relation(fields: [paymentId], references: [id])
-  Wallet      Wallet          @relation(fields: [walletId], references: [id])
-}
-
 model scraping_jobs {
   id             String    @id @default(dbgenerated("gen_random_uuid()"))
   userId         String
@@ -62,15 +28,15 @@ model scraping_jobs {
 }
 
 model user {
-  id            String          @id
-  name          String
-  email         String          @unique
-  emailVerified Boolean         @default(false)
-  image         String?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @default(now())
-  Wallet        Wallet?
-  scraping_jobs scraping_jobs[]
+  id                 String               @id
+  name               String
+  email              String               @unique
+  emailVerified      Boolean              @default(false)
+  image              String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now())
+  scraping_jobs      scraping_jobs[]
+  walletTransactions WalletTransactions[]
 }
 
 model report_progress {
@@ -83,6 +49,26 @@ model report_progress {
   Job       scraping_jobs @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   @@index([jobId])
+}
+
+model WalletTransactions {
+  id              String          @id @default(dbgenerated("gen_random_uuid()"))
+  userId          String
+  authToken       String?
+  merchantOrderId String?
+  metaInfo        Json
+  paymentFlow     String
+  phonepeOrderId  String?
+  transactionId   String?
+  amount          Float
+  description     String?
+  status          String
+  type            TransactionType
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @default(now())
+  user            user            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 enum PaymentStatus {

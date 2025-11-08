@@ -35,7 +35,6 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     const userId = searchParams.get("userId");
-    console.log("API Request Received");
     if (!userId) {
       return NextResponse.json(
         { message: "User not Authorised" },
@@ -119,33 +118,35 @@ export async function DELETE(req: Request) {
       );
     }
 
+    if (!id) {
+      return NextResponse.json({ message: "Id is required" }, { status: 403 });
+    }
+
     const jobs = await prisma.scraping_jobs.findMany({
       where: {
         userId: userId,
-        id: id || undefined,
+        id: id,
       },
     });
     if (!jobs.length) {
       return NextResponse.json({ message: "Job not found" }, { status: 404 });
     }
-    if (!id)
-      return NextResponse.json({ message: "Id is required" }, { status: 400 });
-    const response = await fetch(`/api/scrapingJobs/${id}`, {
-      method: "DELETE",
+    await prisma.scraping_jobs.delete({
+      where: {
+        id: id,
+        userId: userId,
+      },
     });
-    if (!response.ok) {
-      throw new Error(`Failed to delete job: ${response.statusText}`);
-    }
-    return NextResponse.json(
-      { message: "Job deleted successfully" },
-      { status: 200 },
-    );
+    return NextResponse.json({
+      statusText: "Job deleted successfully",
+      ok: true,
+    });
   } catch (error) {
     console.log(error);
     return NextResponse.json({
-      message: "Internal Server Error",
+      statusText: "Unable to delete job",
       error,
-      status: 500,
+      ok: false,
     });
   }
 }
