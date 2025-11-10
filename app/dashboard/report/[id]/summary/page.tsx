@@ -18,7 +18,7 @@ import {
 import { useUser } from "@stackframe/stack";
 import { scraping_jobs } from "@prisma/client";
 
-// import AIChat from "@/components/AIChat";
+import AIChat from "@/components/AIChat";
 
 interface ReportSummaryProps {
   params: Promise<{ id: string }>;
@@ -104,9 +104,9 @@ export default function ReportSummary({ params }: ReportSummaryProps) {
         <OverallScoreCard seoReport={seoReport} />
         <KeyMetricsGrid seoReport={seoReport} />
 
-        {/*<Protect plan="pro" fallback={<AIChatUpsellCard />}>
-          <AIChat seoReportId={id} />
-        </Protect>*/}
+        {/*<Protect plan="pro" fallback={<AIChatUpsellCard />}>*/}
+        <AIChat seoReportId={id} />
+        {/*</Protect>*/}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
           <SourceDistributionChart seoReport={seoReport} />

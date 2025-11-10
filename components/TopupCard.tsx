@@ -101,7 +101,9 @@ bg-linear-to-br from-emerald-50 to-blue-50 dark:from-emerald-950/30 dark:to-blue
               ₹
             </h1>
             {loading || !balance ? (
-              "Loading.."
+              <h1 className="text-emerald-600 dark:text-emerald-400 text-4xl">
+                Loading..
+              </h1>
             ) : (
               <NumberTicker
                 value={balance}
@@ -155,7 +157,7 @@ shadow-[0_2px_4px_rgba(0,0,0,0.1)] dark:shadow-[0_2px_4px_rgba(0,0,0,0.5)]
 before:absolute before:inset-0 before:rounded-4xl before:pointer-events-none
 before:shadow-[inset_0_1px_4px_rgba(255,255,255,0.6),inset_0_-1px_4px_rgba(0,0,0,0.05)]
 dark:before:shadow-[inset_0_1px_3px_rgba(255,255,255,0.05),inset_0_-1px_4px_rgba(0,0,0,0.4)]
- bg-gradient-to-br from-violet-50 to-pink-50 dark:from-violet-950/30 dark:to-pink-950/30
+ bg-linear-to-br from-violet-50 to-pink-50 dark:from-violet-950/30 dark:to-pink-950/30
 "
       >
         <CardHeader className="">

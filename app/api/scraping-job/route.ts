@@ -82,7 +82,14 @@ export async function PATCH(req: Request) {
     }
     if (!id || !userId)
       return NextResponse.json({ message: "Id is required" }, { status: 400 });
-    const updateData: any = {};
+    const updateData: {
+      snapshotId?: string;
+      status?: string;
+      analysisPrompt?: string;
+      result?: string;
+      seoReport?: string;
+      error?: string;
+    } = {};
     if (snapshotId) updateData.snapshotId = snapshotId;
     if (status) updateData.status = status;
     if (analysisPrompt) updateData.analysisPrompt = analysisPrompt;
@@ -94,6 +101,7 @@ export async function PATCH(req: Request) {
         id: id,
         userId: userId,
       },
+      //@ts-expect-error fix later
       data: updateData,
     });
     return NextResponse.json({ data: patchedData }, { status: 200 });

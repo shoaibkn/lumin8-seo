@@ -105,7 +105,7 @@ export function CreateReportDialog() {
             <Button
               type="submit"
               size="lg"
-              className="h-12 px-6 md:px-8 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 border-0 shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 group font-semibold w-full "
+              className="h-12 px-6 md:px-8 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 border-0 shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 group font-semibold w-full "
               disabled={isLoading || !prompt.trim()}
             >
               {isLoading ? (
