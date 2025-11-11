@@ -6,17 +6,16 @@ import { BarChart3 } from "lucide-react";
 import { CreateReportDialog } from "@/components/CreateReportDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import TopupCard from "@/components/TopupCard";
-import UsageStatisticsCard from "@/components/UsageStatisticsCard";
 import { useUser } from "@stackframe/stack";
 import ReportsTable from "@/components/ReportsTable";
 import { useEffect, useEffectEvent } from "react";
 import { updateUser } from "@/actions/user";
+import Greeter from "@/components/Greeter";
 
 function Dashboard() {
   const isMobile = useIsMobile();
   const user = useUser();
   const redirect = useRouter().push;
-
   useUser({ or: "redirect" });
   const userScript = useEffectEvent(() => {
     if (!user) {
@@ -41,7 +40,7 @@ function Dashboard() {
   }
 
   return (
-    <main className="p-4 sm:w-full md:w-3/4 lg:w-2/3 mx-auto mt-32">
+    <main className="p-4 sm:w-full md:w-3/4 lg:w-2/3 mx-auto mt-32 mb-24">
       <h1 className="text-4xl font-medium text-wrap w-full mt-8">
         <span className="text-4xl">Hi {user?.displayName}</span>,<br /> How can
         I help you today
@@ -64,6 +63,7 @@ function Dashboard() {
           </CardContent>
         </Card>
       </section>
+      <Greeter />
     </main>
   );
 }

@@ -9,7 +9,7 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import { DollarSign } from "lucide-react";
+import { DollarSign, Sparkles } from "lucide-react";
 import { Input } from "./ui/input";
 import { initiatePhonePePayment } from "@/actions/phonepe";
 import { BarChart3 } from "lucide-react";
@@ -21,6 +21,7 @@ import {
 import { WalletTransactions } from "@prisma/client";
 import { NumberTicker } from "./ui/number-ticker";
 import Link from "next/link";
+import { Badge } from "./ui/badge";
 const TopupCard = () => {
   const [amount, setAmount] = useState<number | undefined>(0);
   const [balance, setBalance] = useState<number | undefined>(0);
@@ -96,20 +97,39 @@ bg-linear-to-br from-emerald-50 to-blue-50 dark:from-emerald-950/30 dark:to-blue
         </CardHeader>
 
         <CardContent>
-          <div className="pb-6 flex flex-row">
-            <h1 className="text-2xl text-emerald-600 dark:text-emerald-400 font-bold">
-              ₹
-            </h1>
-            {loading || !balance ? (
-              <h1 className="text-emerald-600 dark:text-emerald-400 text-4xl">
-                Loading..
+          <div>
+            <div className="pb-6 flex flex-row">
+              <h1 className="text-2xl text-emerald-600 dark:text-emerald-400 font-bold">
+                ₹
               </h1>
-            ) : (
-              <NumberTicker
-                value={balance}
-                decimalPlaces={2}
-                className="text-emerald-600 dark:text-emerald-400 text-7xl"
-              />
+              {loading || !balance ? (
+                <h1 className="text-emerald-600 dark:text-emerald-400 text-4xl">
+                  Loading..
+                </h1>
+              ) : (
+                <NumberTicker
+                  value={balance}
+                  decimalPlaces={2}
+                  className="text-emerald-600 dark:text-emerald-400 text-7xl"
+                />
+              )}
+            </div>
+            {balance && (
+              <span className="flex flex-row gap-4 w-full items-center mb-4">
+                <Badge
+                  variant={"outline"}
+                  className="cursor-default h-8 px-4 bg-emerald-100 dark:bg-emerald-900/30"
+                >
+                  {Math.floor(balance / 10)} Basic Reports
+                </Badge>
+                <Badge
+                  variant={"secondary"}
+                  className="cursor-default h-8 px-4 border border-emerald-200 dark:border-emerald-800"
+                >
+                  <Sparkles />
+                  {Math.floor(balance / 25)} Smart Reports
+                </Badge>
+              </span>
             )}
           </div>
 

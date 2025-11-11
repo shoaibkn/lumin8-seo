@@ -39,6 +39,7 @@ import { useUser } from "@stackframe/stack";
 import { fetcher } from "@/lib/fetcher";
 import useSWR from "swr";
 import { scraping_jobs } from "@prisma/client";
+import { Badge } from "@/components/ui/badge";
 
 export default function ReportPage({
   params,
@@ -56,7 +57,7 @@ export default function ReportPage({
   const { data, error, isLoading } = useSWR(
     `/api/scraping-job?userId=${user?.id}&id=${id}`,
     fetcher,
-    { refreshInterval: 1000 },
+    { refreshInterval: () => (job?.status !== "COMPLETED" ? 2000 : 0) },
   );
 
   useEffect(() => {
@@ -142,7 +143,7 @@ export default function ReportPage({
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-background via-background to-muted/20 pt-24">
+    <div className="min-h-screen bg-linear-to-br from-background via-background to-muted/20 mt-24 mb-12">
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="space-y-6">
           {/* Header */}
@@ -173,6 +174,13 @@ export default function ReportPage({
               </CardTitle>
               <CardDescription className="text-base">
                 {getStatusMessage(job.status)}
+                {job.status !== "COMPLETED" && (
+                  <span className="text-xs text-muted-foreground">
+                    <br />
+                    You will also receive an email notification when your report
+                    is ready.
+                  </span>
+                )}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">

@@ -104,12 +104,14 @@ export default function ReportSummary({ params }: ReportSummaryProps) {
         <OverallScoreCard seoReport={seoReport} />
         <KeyMetricsGrid seoReport={seoReport} />
 
-        {/*<Protect plan="pro" fallback={<AIChatUpsellCard />}>*/}
-        <AIChat seoReportId={id} />
-        {/*</Protect>*/}
+        {job.requestType === "BASIC" ? (
+          <AIChatUpsellCard />
+        ) : (
+          <AIChat seoReportId={id} />
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
-          <SourceDistributionChart seoReport={seoReport} />
+          <SourceDistributionChart seoReport={seoReport} />{" "}
           <CompetitorStrengthCard seoReport={seoReport} />
         </div>
 

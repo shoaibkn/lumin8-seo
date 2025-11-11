@@ -64,7 +64,7 @@ export const walletData = async () => {
     };
   }
 
-  const reportsGenerated = await prisma.walletTransactions.count({
+  const reportsGenerated = await prisma.scraping_jobs.count({
     where: {
       userId: user.id,
       status: {
@@ -103,4 +103,51 @@ export const walletData = async () => {
     reportsGenerated,
     creditsUsed,
   };
+};
+
+export const deductFromWallet = async (jobId: string) => {
+  try {
+    const job = await prisma.scraping_jobs.findFirst({
+      where: {
+        id: jobId,
+      },
+    });
+    if (!job) {
+      console.log("Job not found");
+      return { ok: false, error: "Job not found" };
+    }
+    const amount = job.requestType === "BASIC" ? 10 : 25;
+
+    await prisma.walletTransactions.create({
+      data: {
+        userId: job.userId,
+        metaInfo: {
+          jobId: jobId,
+          jobType: job.requestType,
+        },
+        paymentFlow: "WALLET",
+        amount,
+        status: "COMPLETED",
+        type: "DEBIT",
+        description: `${job.requestType} SEO Analysis Completed`,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return { ok: false, error: error };
+  }
+};
+
+export const refundToWallet = async (paymentId: string) => {
+  try {
+    await prisma.walletTransactions.delete({
+      where: {
+        id: paymentId,
+      },
+    });
+    return { ok: true };
+  } catch (error) {
+    console.log(error);
+    return { ok: false, error: error };
+  }
 };

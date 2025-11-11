@@ -5,6 +5,7 @@ import { generateObject } from "ai";
 import { buildAnalysisPrompt, systemPrompt } from "@/prompts/gpt";
 import { seoReportSchema } from "../lib/seo-schema";
 import { prisma } from "@/lib/prisma";
+import { deductFromWallet } from "./wallet";
 
 /**
  * Run AI analysis on existing scraping data for a job.
@@ -95,6 +96,15 @@ export const runAnalysis = async (jobId: string) => {
         status: "COMPLETED",
       },
     });
+
+    const makePayment = await deductFromWallet(jobId);
+    if (!makePayment) {
+      console.error("Failed to deduct payment for job:", jobId);
+      return null;
+    }
+    if (makePayment.ok) {
+      console.log("Payment deducted successfully for job:", jobId);
+    }
 
     console.log(`Job ${jobId} analysis completed successfully`);
 

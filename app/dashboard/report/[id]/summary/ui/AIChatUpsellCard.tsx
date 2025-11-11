@@ -34,7 +34,7 @@ export function AIChatUpsellCard() {
                 </div>
                 <Badge className="bg-linear-to-r from-indigo-500 to-purple-600 text-white border-0 px-4 py-2 text-sm">
                   <Crown className="h-4 w-4 mr-2" />
-                  Pro Feature
+                  Smart Feature
                 </Badge>
               </div>
 
@@ -82,18 +82,18 @@ export function AIChatUpsellCard() {
               >
                 <Link href="/pricing">
                   <Zap className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                  Upgrade to Pro
+                  Try Smart Reports
                   <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
               </Button>
 
-              <Button
+              {/*<Button
                 variant="outline"
                 asChild
                 className="border-indigo-200 dark:border-indigo-800 hover:bg-indigo-50 dark:hover:bg-indigo-950 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-300 px-8 py-6 text-base h-auto"
               >
                 <Link href="/pricing">View Plans</Link>
-              </Button>
+              </Button>*/}
             </div>
           </div>
 

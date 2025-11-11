@@ -6,9 +6,9 @@ import { streamText, UIMessage, convertToModelMessages } from "ai";
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
-if (!process.env.NEXT_PUBLIC_CONVEX_URL) {
-  throw new Error("NEXT_PUBLIC_CONVEX_URL is not set");
-}
+// if (!process.env.NEXT_PUBLIC_CONVEX_URL) {
+//   throw new Error("NEXT_PUBLIC_CONVEX_URL is not set");
+// }
 
 export async function POST(req: Request) {
   const user = await stackServerApp.getUser();
@@ -23,7 +23,6 @@ export async function POST(req: Request) {
     messages: UIMessage[];
     id: string;
   } = await req.json();
-
   // Get the SEO report from the database
   let seoReportData = null;
   let systemPrompt = `You are an AI assistant helping users understand their SEO report.
@@ -32,15 +31,10 @@ export async function POST(req: Request) {
 
   if (id) {
     try {
-      // const job = await convex.query(api.scrapingJobs.getJobBySnapshotId, {
-      //   snapshotId: id,
-      //   userId: userId,
-      // });
-      //
       const job = await prisma.scraping_jobs.findFirst({
         where: {
-          snapshotId: id,
-          userId: userId,
+          id,
+          userId,
         },
       });
 

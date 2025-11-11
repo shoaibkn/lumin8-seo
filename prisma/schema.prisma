@@ -8,19 +8,20 @@ datasource db {
 }
 
 model scraping_jobs {
-  id             String    @id @default(dbgenerated("gen_random_uuid()"))
+  id             String      @id @default(dbgenerated("gen_random_uuid()"))
   userId         String
   originalPrompt String
   analysisPrompt String?
   snapshotId     String?
   status         Status
   result         Json?
+  requestType    RequestType @default(BASIC)
   seoReport      String?
   error          String?
   completedAt    DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @default(now())
-  user           user      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @default(now())
+  user           user        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   report_progress report_progress?
 
@@ -88,4 +89,9 @@ enum Status {
 enum TransactionType {
   CREDIT
   DEBIT
+}
+
+enum RequestType {
+  SMART
+  BASIC
 }

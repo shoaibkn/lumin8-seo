@@ -9,23 +9,32 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
-import { FileText, Plus, PlusCircle } from "lucide-react";
+import { Bot, FileText, Plus, PlusCircle, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { CountrySelector } from "./CountrySelector";
 import { useRouter } from "next/navigation";
 import startScraping from "@/actions/startScraping";
+import { Badge } from "./ui/badge";
+import { Checkbox } from "./ui/checkbox";
+import { Switch } from "./ui/switch";
 
 export function CreateReportDrawer() {
   const [prompt, setPrompt] = useState("");
   const [country, setCountry] = useState("IN");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSmartRequest, setIsSmartRequest] = useState(false);
 
   const router = useRouter();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await startScraping(prompt, undefined, country);
+      const response = await startScraping(
+        prompt,
+        undefined,
+        country,
+        isSmartRequest ? "SMART" : "BASIC",
+      );
       if (!response.ok) {
         throw new Error("Failed to generate report");
       }
@@ -82,7 +91,13 @@ export function CreateReportDrawer() {
               />
             </div>
 
-            <div className="w-full"></div>
+            <div className="w-full flex items-center gap-2">
+              <Switch
+                checked={isSmartRequest}
+                onCheckedChange={() => setIsSmartRequest(!isSmartRequest)}
+              />{" "}
+              <span className="text-sm">Use Smart Prompts</span>
+            </div>
           </div>
 
           {/* Feature highlights */}
@@ -104,7 +119,8 @@ export function CreateReportDrawer() {
             <Button
               type="submit"
               size="lg"
-              className="h-12 px-6 md:px-8 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 border-0 shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 group font-semibold w-full "
+              className={`h-12 px-6 md:px-8  border-0 shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 group font-semibold w-full
+                ${isSmartRequest ? "bg-linear-to-bl from-accent/50  to-primary hover:from-accent/70  hover:to-primary" : "bg-secondary"}`}
               disabled={isLoading || !prompt.trim()}
             >
               {isLoading ? (
@@ -115,9 +131,18 @@ export function CreateReportDrawer() {
                 </>
               ) : (
                 <>
-                  <Plus className="w-5 h-5 mr-3 group-hover:rotate-90 transition-transform duration-300" />
+                  {isSmartRequest ? (
+                    <Sparkles className="w-5 h-5 mr-3 group-hover:rotate-90 transition-transform duration-300" />
+                  ) : (
+                    <Plus className="w-5 h-5 mr-3 group-hover:rotate-90 transition-transform duration-300" />
+                  )}
+
                   <span className="hidden lg:inline">Generate Report</span>
                   <span className="lg:hidden">Generate</span>
+                  <Badge className="bg-secondary">
+                    <Bot />
+                    {isSmartRequest ? "25Rs." : "10Rs."}
+                  </Badge>
                 </>
               )}
             </Button>
