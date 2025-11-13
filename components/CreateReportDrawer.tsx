@@ -51,9 +51,8 @@ export function CreateReportDrawer() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant={"default"} className={`border`}>
+        <Button size={"icon-lg"} variant={"default"} className={`border`}>
           <PlusCircle />
-          New SEO
         </Button>
       </DrawerTrigger>
       <DrawerContent className="p-4">

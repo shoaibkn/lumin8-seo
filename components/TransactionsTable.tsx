@@ -41,10 +41,10 @@ export type Transaction = {
   id: string;
   userId: string;
   amount: number;
-  status: "SUCCESS" | "FAILED" | "PENDING" | "REFUNDED";
-  type: "CREDIT" | "DEBIT";
+  status: string;
+  type: string;
   merchantOrderId: string | null;
-  paymentFlow: "UPI" | "CARD" | "NETBANKING" | "WALLET";
+  paymentFlow: string;
   description: string | null;
   createdAt: string;
   updatedAt: string;
@@ -147,7 +147,6 @@ export function TransactionsTable() {
   }, [type, searchText]);
 
   const table = useReactTable({
-    //@ts-expect-error fix later
     data: transactionData,
     columns,
     onSortingChange: setSorting,

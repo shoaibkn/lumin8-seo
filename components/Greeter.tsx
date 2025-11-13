@@ -99,10 +99,10 @@ const Greeter = () => {
                 </p>
                 <div className="bg-white dark:bg-foreground/10 rounded-lg p-4 mb-3">
                   <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                    Rs.500
+                    Rs.100
                   </p>
                   <p className="text-xs text-foreground/60 mt-1">
-                    Ready to use on your first purchase
+                    Ready to use to generate your first SEO reports
                   </p>
                 </div>
               </div>

@@ -56,7 +56,8 @@ const UserAccount = () => {
       }
       setLoading(false);
     } catch (error) {
-      setError(error.message);
+      // setError(error);
+      console.log(error);
       toast("Unable to update profile");
       setLoading(false);
     }

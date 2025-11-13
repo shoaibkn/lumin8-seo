@@ -49,11 +49,12 @@ export const updateUser = async (user: {
       try {
         await prisma.walletTransactions.create({
           data: {
-            metaInfo: { type: "PROMO RECHARGE - 500" },
+            metaInfo: { type: "PROMO RECHARGE - 100" },
             paymentFlow: "PROMO",
             type: "CREDIT",
             userId: user.id,
-            amount: 500,
+            amount: 100,
+            status: "COMPLETED",
             description: "PROMO for New User",
           },
         });

@@ -117,20 +117,20 @@ export default function LoginPage() {
             <div className="w-8 h-8 bg-sidebar rounded-lg flex items-center justify-center mr-3">
               <div className="w-4 h-4 rounded-sm bg-primary"></div>
             </div>
-            <h1 className="text-xl font-semibold">Frello</h1>
+            <h1 className="text-xl font-semibold">Lumin8 SEO</h1>
           </div>
 
           <div className="flex-1 flex flex-col justify-center">
             <h2 className="text-4xl text-white mb-6 leading-tight">
-              Effortlessly manage your team and operations.
+              Effortlessly generate SEO reports for Brands.
             </h2>
             <p className="text-white/90 text-lg leading-relaxed">
-              Log in to access your CRM dashboard and manage your team.
+              Log in to access AI-powered SEO reports and optimize your content.
             </p>
           </div>
 
           <div className="flex justify-between items-center text-white/70 text-sm">
-            <span>Copyright © 2025 Frello Enterprises LTD.</span>
+            <span>Copyright © 2025 Lumin8 Studios.</span>
             <span className="cursor-pointer hover:text-white/90">
               Privacy Policy
             </span>
@@ -144,7 +144,9 @@ export default function LoginPage() {
             <div className="w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-3 bg-primary">
               <div className="w-4 h-4 bg-white rounded-sm"></div>
             </div>
-            <h1 className="text-xl font-semibold text-foreground">Frello</h1>
+            <h1 className="text-xl font-semibold text-foreground">
+              Lumin8 SEO
+            </h1>
           </div>
 
           <div className="flex flex-col gap-4">
@@ -167,7 +169,7 @@ export default function LoginPage() {
                 {currentView === "login" &&
                   "Enter your email and password to access your account."}
                 {currentView === "register" &&
-                  "Create a new account to get started with Frello."}
+                  "Create a new account to get started with Lumin8."}
                 {currentView === "forgot" &&
                   "Enter your email address and we'll send you a reset link."}
               </p>

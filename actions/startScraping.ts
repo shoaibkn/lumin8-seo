@@ -14,7 +14,7 @@ const startScraping = async (
   prompt: string,
   existingJobId?: string,
   country: string = "IN",
-  requestType?: string | "BASIC",
+  requestType?: string,
 ) => {
   const serverUser = await stackServerApp.getUser();
   if (!serverUser) {
@@ -73,7 +73,7 @@ const startScraping = async (
     job = await prisma.scraping_jobs.create({
       data: {
         userId: serverUser.id,
-        requestType,
+        requestType: (requestType as "BASIC" | "SMART") || "BASIC",
         originalPrompt: prompt,
         status: "PENDING",
       },
