@@ -1,5 +1,6 @@
 "use client";
 
+import { AIChatUpsellCard } from "@/app/dashboard/report/[id]/summary/ui";
 import { TransactionsTable } from "@/components/TransactionsTable";
 
 import { useUser } from "@stackframe/stack";
@@ -19,6 +20,7 @@ const TransactionsPage = () => {
       </h1>
       <section className="mt-8">
         <TransactionsTable />
+        {/*<AIChatUpsellCard />*/}
       </section>
     </main>
   );

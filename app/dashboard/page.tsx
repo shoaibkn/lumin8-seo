@@ -42,8 +42,7 @@ function Dashboard() {
   return (
     <main className="p-4 sm:w-full md:w-3/4 lg:w-2/3 mx-auto mt-32 mb-24">
       <h1 className="text-4xl font-medium text-wrap w-full mt-8">
-        <span className="text-4xl">Hi {user?.displayName}</span>,<br /> How can
-        I help you today
+        <span className="text-4xl">Hi {user?.displayName}</span>
       </h1>
       <TopupCard />
       <section className="mt-12">

@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -45,6 +46,7 @@ import {
 import Image from "next/image";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Header from "@/components/global/Header";
+import Link from "next/link";
 
 // Icon mapping for dynamic icon rendering
 const iconMap = {
@@ -102,17 +104,22 @@ export default function Home() {
             {...ANIMATIONS.hero.buttons}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Button size="lg" className="text-lg px-8">
-              {HERO.buttons.primary.text}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button
-              size="lg"
-              variant={HERO.buttons.secondary.variant}
-              className="text-lg px-8"
-            >
-              {HERO.buttons.secondary.text}
-            </Button>
+            <Link href={HERO.buttons.primary.href}>
+              <Button size="lg" className="text-lg px-8">
+                {HERO.buttons.primary.text}
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link href={HERO.buttons.secondary.href}>
+              <Button
+                size="lg"
+                variant={HERO.buttons.secondary.variant}
+                className="text-lg px-8"
+              >
+                {HERO.buttons.secondary.text}
+                <Github />
+              </Button>
+            </Link>
           </motion.div>
           <motion.div {...ANIMATIONS.hero.image}>
             <Image
@@ -188,7 +195,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {PRICING.plans.map((plan, index) => (
               <motion.div
                 key={index}
@@ -201,7 +208,7 @@ export default function Home() {
                 whileHover={ANIMATIONS.card.hover}
               >
                 <Card
-                  className={`h-full relative ${
+                  className={`h-full pb-0 relative ${
                     plan.popular ? "border-primary shadow-lg" : ""
                   }`}
                 >
@@ -224,7 +231,7 @@ export default function Home() {
                       {plan.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="flex flex-col justify-between">
                     <ul className="space-y-3 mb-6">
                       {plan.features.map((feature, featureIndex) => (
                         <li key={featureIndex} className="flex items-center">
@@ -233,13 +240,15 @@ export default function Home() {
                         </li>
                       ))}
                     </ul>
+                  </CardContent>
+                  <CardFooter className="h-full flex flex-col justify-end p-4">
                     <Button
-                      className="w-full"
+                      className="w-full items-end"
                       variant={plan.popular ? "default" : "outline"}
                     >
                       {plan.cta}
                     </Button>
-                  </CardContent>
+                  </CardFooter>
                 </Card>
               </motion.div>
             ))}
@@ -380,14 +389,14 @@ export default function Home() {
             <div className="space-y-4">
               <h3 className="font-semibold">Product</h3>
               <div className="space-y-2">
-                {FOOTER.links.product.map((item) => (
-                  <a
-                    key={item}
-                    href="#"
+                {FOOTER.links.product.map((item, index) => (
+                  <Link
+                    key={index}
+                    href={item.href}
                     className="block text-muted-foreground hover:text-primary transition-colors"
                   >
-                    {item}
-                  </a>
+                    {item.label}
+                  </Link>
                 ))}
               </div>
             </div>

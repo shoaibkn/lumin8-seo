@@ -22,6 +22,8 @@ import { WalletTransactions } from "@prisma/client";
 import { NumberTicker } from "./ui/number-ticker";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
+import PaymentDialog from "./PaymentDialog";
+import { toast } from "sonner";
 const TopupCard = () => {
   const [amount, setAmount] = useState<number | undefined>(0);
   const [balance, setBalance] = useState<number | undefined>(0);
@@ -35,11 +37,16 @@ const TopupCard = () => {
     transactions: WalletTransactions[];
   }>({ balance: 0, transactions: [] });
   const handlePayment = async () => {
+    if (process.env.NEXT_PUBLIC_PAYMENTS_STATUS === "ALLOW") {
+      toast.warning("Payments are disabled");
+      return null;
+    }
     console.log("Generating payment link...");
     if (!amount) return;
-    await initiatePhonePePayment(amount, "test+user");
+    // const payment = await initiatePhonePePayment(amount, "test+user");
+    // setPaymentUrl(payment.redirectUrl);
   };
-
+  const [paymentUrl, setPaymentUrl] = useState<string | undefined>(undefined);
   const transactions = useEffectEvent(async () => {
     // Fetch user transactions from API
     try {
@@ -75,6 +82,7 @@ const TopupCard = () => {
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 -z-10">
+      {paymentUrl && <PaymentDialog url={paymentUrl} />}
       <Card
         className="rounded-4xl relative
 border border-neutral-300 dark:border-neutral-700
@@ -83,6 +91,7 @@ before:absolute before:inset-0 before:rounded-4xl before:pointer-events-none
 before:shadow-[inset_0_1px_4px_rgba(255,255,255,0.6),inset_0_-1px_4px_rgba(0,0,0,0.05)]
 dark:before:shadow-[inset_0_1px_3px_rgba(255,255,255,0.05),inset_0_-1px_4px_rgba(0,0,0,0.4)]
 bg-linear-to-br from-emerald-50 to-blue-50 dark:from-emerald-950/30 dark:to-blue-950/30
+pb-0
 "
       >
         {/*<div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-400/20 to-blue-400/20 rounded-full -translate-y-12 translate-x-12" />*/}
@@ -151,7 +160,7 @@ bg-linear-to-br from-emerald-50 to-blue-50 dark:from-emerald-950/30 dark:to-blue
             ))}
           </div>
         </CardContent>
-        <CardFooter className="w-full">
+        <CardFooter className="w-full pb-4 rounded-b-4xl">
           <div className="w-full flex flex-row gap-2 mt-4">
             <Input
               type="number"

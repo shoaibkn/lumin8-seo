@@ -28,34 +28,29 @@ export async function initiatePhonePePayment(amount: number, userId: string) {
     body: JSON.stringify(body),
   };
 
-  const url = "https://api-preprod.phonepe.com/apis/pg-sandbox/checkout/v2/pay";
+  if (!process.env.PHONEPE_ENDPOINT)
+    return { ok: false, message: "PhonePe endpoint not set" };
+
+  const url = `${process.env.PHONEPE_ENDPOINT}checkout/v2/pay`;
 
   const response = await fetch(url, options);
   const data = await response.json();
   console.log(data);
   return data;
-
-  // const response = await fetch("https://api.phonepe.com/v1/payments", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "Authorization": `Bearer ${process.env.PHONEPE_API_KEY}`
-  //   },
-  //   body: JSON.stringify({
-  //     amount,
-  //     userId,
-  //     callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/phonepe/callback`
-  //   })
-  // });
-
-  console.log(auth);
-  return { auth: auth };
 }
 
 const getPhonePeAuth = async () => {
   try {
-    const url =
-      "https://api-preprod.phonepe.com/apis/pg-sandbox/v1/oauth/token";
+    if (!process.env.PHONEPE_ENDPOINT)
+      return { ok: false, message: "PhonePe endpoint not set" };
+
+    if (!process.env.PHONEPE_CLIENT_ID)
+      return { ok: false, message: "PhonePe client ID not set" };
+
+    if (!process.env.PHONEPE_CLIENT_SECRET)
+      return { ok: false, message: "PhonePe client secret not set" };
+
+    const url = `${process.env.PHONEPE_ENDPOINT}v1/oauth/token`;
 
     const requestHeaders = {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -64,8 +59,8 @@ const getPhonePeAuth = async () => {
     const requestBodyJson = {
       client_version: "1",
       grant_type: "client_credentials",
-      client_id: "TEST-M23ZNHB6SJPW1_25110",
-      client_secret: "ZmE1ZDBiNTktNmE0Mi00NmExLTliZTEtMTA1Y2Q5YzEwYThm",
+      client_id: process.env.PHONEPE_CLIENT_ID,
+      client_secret: process.env.PHONEPE_CLIENT_SECRET,
     };
 
     const requestBody = new URLSearchParams(requestBodyJson).toString();

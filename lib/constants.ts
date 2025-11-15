@@ -4,16 +4,16 @@ export const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION || "1.0.0";
 
 // Site Configuration
 export const SITE_CONFIG = {
-  name: "SaaSify",
-  tagline: "Scale Your Business With Smart Tools",
+  name: "Lumin8 SEO",
+  tagline: "AI that makes SEO effortless.",
   description:
-    "The all-in-one platform that helps you manage, analyze, and grow your business with powerful automation and insights.",
+    "An intuitive SEO platform powered by advanced AI models that optimize content, structure, and strategy in real time. No guesswork, no spreadsheets—just smart automation that helps you grow organically.",
   url: "https://saasify.com",
   ogImage: "/og-image.jpg",
   links: {
-    twitter: "https://twitter.com/saasify",
-    github: "https://github.com/saasify",
-    linkedin: "https://linkedin.com/company/saasify",
+    twitter: "https://twitter.com/lumin8-seo",
+    github: "https://github.com/lumin8-seo",
+    linkedin: "https://linkedin.com/company/lumin8-seo",
   },
 } as const;
 
@@ -38,7 +38,7 @@ export const NAVIGATION = {
 // Hero Section
 export const HERO = {
   badge: {
-    text: "🚀 New: AI-Powered Analytics",
+    text: "🚀 Unlock AI-Powered Growth",
     variant: "secondary" as const,
   },
   headline: {
@@ -46,45 +46,50 @@ export const HERO = {
     sub: "With Smart Tools",
   },
   description:
-    "The all-in-one platform that helps you manage, analyze, and grow your business with powerful automation and insights.",
+    "An intuitive SEO platform powered by advanced AI models that optimize content, structure, and strategy in real time. No guesswork, no spreadsheets—just smart automation that helps you grow organically.",
   buttons: {
     primary: {
-      text: "Start Free Trial",
+      text: "Start For Free",
       icon: "ArrowRight" as const,
+      href: "/dashboard",
     },
     secondary: {
-      text: "Watch Demo",
+      text: "View Source",
       variant: "outline" as const,
+      href: "https://github.com/shoaibkn/lumin8-seo",
     },
   },
 } as const;
 
 // Features Section
 export const FEATURES = {
-  title: "Powerful Features",
+  title: "Powerful Features, Tailored for Growth",
   description:
-    "Everything you need to manage and grow your business in one place",
+    "All the tools you need to scale your business and streamline operations, now in one seamless platform.",
   items: [
     {
       icon: "Zap" as const,
-      title: "Lightning Fast",
-      description: "Optimized performance with sub-second response times",
+      title: "Blazing Fast Performance",
+      description:
+        "Instant responses with lightning-fast, optimized performance.",
     },
     {
       icon: "Shield" as const,
-      title: "Secure & Reliable",
-      description: "Enterprise-grade security with 99.9% uptime guarantee",
+      title: "Rock-Solid Security",
+      description:
+        "Trust in enterprise-grade security and a 99.9% uptime guarantee.",
     },
     {
       icon: "Users" as const,
-      title: "Team Collaboration",
+      title: "Seamless Team Collaboration",
       description:
-        "Work together seamlessly with real-time collaboration tools",
+        "Empower your team with real-time, collaborative tools for smooth workflows.",
     },
     {
       icon: "BarChart3" as const,
-      title: "Advanced Analytics",
-      description: "Get insights with powerful analytics and reporting tools",
+      title: "Powerful Analytics",
+      description:
+        "Unlock actionable insights with advanced reporting and analytics tools.",
     },
   ],
 } as const;
@@ -92,54 +97,34 @@ export const FEATURES = {
 // Pricing Section
 export const PRICING = {
   title: "Simple Pricing",
-  description: "Choose the plan that's right for your business",
+  description: "Choose the report type that fits your needs",
   plans: [
     {
-      name: "Starter",
-      price: "$29",
-      period: "/month",
-      description: "Perfect for small teams getting started",
+      name: "Basic Report",
+      price: "₹10",
+      period: "/report",
+      description: "Essential reports with core insights",
       features: [
-        "Up to 5 team members",
-        "10GB storage",
-        "Basic analytics",
-        "Email support",
+        "General report generation",
+        "Fast processing",
+        "Easy-to-read summaries",
       ],
       popular: false,
-      cta: "Get Started",
+      cta: "Generate Report",
     },
     {
-      name: "Professional",
-      price: "$79",
-      period: "/month",
-      description: "Best for growing businesses",
+      name: "Smart Report",
+      price: "₹25",
+      period: "/report",
+      description: "Advanced intelligence with deeper insights",
       features: [
-        "Up to 25 team members",
-        "100GB storage",
-        "Advanced analytics",
-        "Priority support",
-        "API access",
-        "Custom integrations",
+        "Everything in Basic",
+        "AI-powered Smart report generation",
+        "Chat assistant for detailed insights",
+        "Better recommendations & analysis",
       ],
       popular: true,
-      cta: "Get Started",
-    },
-    {
-      name: "Enterprise",
-      price: "$199",
-      period: "/month",
-      description: "For large organizations",
-      features: [
-        "Unlimited team members",
-        "Unlimited storage",
-        "Custom analytics",
-        "24/7 phone support",
-        "Advanced API",
-        "Custom integrations",
-        "Dedicated account manager",
-      ],
-      popular: false,
-      cta: "Get Started",
+      cta: "Generate Smart Report",
     },
   ],
   popularBadge: "Most Popular",
@@ -177,32 +162,37 @@ export const TESTIMONIALS = {
 // FAQ Section
 export const FAQ = {
   title: "Frequently Asked Questions",
-  description: "Everything you need to know about our platform",
+  description: "Everything you need to know about our AI-powered reports",
   items: [
     {
-      question: "How does the free trial work?",
+      question: "How do the report charges work?",
       answer:
-        "Our free trial gives you full access to all features for 14 days. No credit card required. You can cancel anytime during the trial period.",
+        "You only pay per report—₹10 for Basic reports and ₹25 for Smart reports. There are no subscriptions, hidden fees, or long-term commitments.",
     },
     {
-      question: "Can I change my plan later?",
+      question: "What’s the difference between Basic and Smart reports?",
       answer:
-        "Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate any billing differences.",
+        "Basic reports provide general insights and essential SEO data. Smart reports deliver deeper analysis, improved recommendations, and include an AI chat assistant for follow-up questions and insights.",
     },
     {
-      question: "What kind of support do you offer?",
+      question: "How does the chat assistant work?",
       answer:
-        "We offer email support for all plans, priority support for Professional plans, and 24/7 phone support for Enterprise customers.",
+        "With Smart reports, you'll get access to an AI chat assistant that helps you interpret results, explore insights, and get actionable recommendations tailored to your site.",
     },
     {
-      question: "Is my data secure?",
+      question: "Do I need any SEO experience to use this?",
       answer:
-        "Absolutely. We use enterprise-grade encryption, regular security audits, and comply with SOC 2 Type II standards. Your data is never shared with third parties.",
+        "Not at all. Our platform is designed for beginners and experts alike. Just enter your details, generate a report, and follow the clear recommendations.",
     },
     {
-      question: "Do you offer custom integrations?",
+      question: "Is my data safe?",
       answer:
-        "Yes, we offer custom integrations for Professional and Enterprise plans. Our team can help you connect with any tools you're already using.",
+        "Yes. We use secure data handling practices, encrypted processing, and do not store your site data longer than needed to generate your report.",
+    },
+    {
+      question: "Can I generate unlimited reports?",
+      answer:
+        "Yes, you can generate as many reports as you like. You simply pay per report based on the type you choose.",
     },
   ],
 } as const;
@@ -214,16 +204,24 @@ export const FOOTER = {
     description: "The all-in-one platform for modern businesses.",
   },
   links: {
-    product: ["Features", "Pricing", "Integrations", "API"],
+    product: [
+      { label: "Features", href: "#features" },
+      { label: "Pricing", href: "#pricing" },
+      { label: "API", href: "https://github.com/shoaibkn/lumin8-seo" },
+    ],
     company: ["About", "Blog", "Careers", "Contact"],
     support: ["Help Center", "Documentation", "Status", "Community"],
   },
   social: [
-    { name: "Github", icon: "Github" as const, href: "#" },
-    { name: "Twitter", icon: "Twitter" as const, href: "#" },
-    { name: "LinkedIn", icon: "Linkedin" as const, href: "#" },
+    {
+      name: "Github",
+      icon: "Github" as const,
+      href: "https://github.com/shoaibkn/lumin8-seo",
+    },
+    // { name: "Twitter", icon: "Twitter" as const, href: "#" },
+    // { name: "LinkedIn", icon: "Linkedin" as const, href: "#" },
   ],
-  copyright: "© 2024 SaaSify. All rights reserved.",
+  copyright: "© 2025 Lumin8. All rights reserved.",
 } as const;
 
 // Animation Configuration
