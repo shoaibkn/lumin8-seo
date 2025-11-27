@@ -244,10 +244,15 @@ export default function AIChat({ seoReportId }: { seoReportId: string }) {
       )}
 
       {/* Toggle Button */}
-      <div className="fixed bottom-0 right-4 z-50">
+      <div className="absolute bottom-0 right-4 mb-4 z-50 p-2 flex flex-row gap-2 rounded-xl bg-card/25 backdrop-blur supports-backdrop-filter:bg-card/45 border">
         <Button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="w-16 h-16 rounded-full bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-xl hover:shadow-indigo-500/25 transition-all duration-300 hover:scale-105"
+          onClick={() => {
+            setIsExpanded(!isExpanded);
+            console.log("AI clicked");
+          }}
+          size={"icon-lg"}
+          variant={"default"}
+          className={`border h-12 w-12`}
         >
           {isExpanded ? (
             <X className="w-6 h-6 text-white" />

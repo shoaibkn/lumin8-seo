@@ -6,6 +6,10 @@ import { buildAnalysisPrompt, systemPrompt } from "@/prompts/gpt";
 import { seoReportSchema } from "../lib/seo-schema";
 import { prisma } from "@/lib/prisma";
 import { deductFromWallet } from "./wallet";
+import { Resend } from "resend";
+import { reportGeneratedEmail } from "@/lib/email";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
  * Run AI analysis on existing scraping data for a job.
@@ -90,13 +94,28 @@ export const runAnalysis = async (jobId: string) => {
     console.log("SEO report saved for job:", jobId);
 
     // Step 3: Complete the job (mark as completed)
-    await prisma.scraping_jobs.update({
+    const jobOutput = await prisma.scraping_jobs.update({
       where: { id: jobId },
       data: {
         status: "COMPLETED",
       },
     });
 
+    if (jobOutput.seoReport) {
+      const emailData = JSON.parse(jobOutput.seoReport);
+      const emailBody = reportGeneratedEmail({
+        id: jobId,
+        confidence_score: emailData.meta.confidence_score,
+        data_sources_count: emailData.meta.data_sources_count,
+        entity_name: emailData.meta.entity_name,
+      });
+      resend.emails.send({
+        from: "Lumin8 <noreply@lumin8.in>",
+        to: "hello@lumin8.in",
+        subject: `Your SEO Report is here`,
+        html: emailBody,
+      });
+    }
     const makePayment = await deductFromWallet(jobId);
     if (!makePayment) {
       console.error("Failed to deduct payment for job:", jobId);

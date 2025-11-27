@@ -34,7 +34,7 @@ function Navbar() {
   return (
     <>
       {isMobile ? (
-        <nav className="flex flex-row fixed bottom-0 p-4 justify-between z-50 w-full">
+        <nav className="flex flex-row fixed bottom-0 p-4 justify-between z-20 w-full">
           {pathName !== "/" ? (
             <>
               <span className="p-2 flex flex-row gap-2 rounded-xl bg-card/25 backdrop-blur supports-backdrop-filter:bg-card/45 border">
@@ -55,9 +55,11 @@ function Navbar() {
                   </Button>
                 </Link>
               </span>
-              <span className="p-2 flex flex-row gap-2 rounded-xl bg-card/25 backdrop-blur supports-backdrop-filter:bg-card/45 border">
-                <CreateReportDrawer />
-              </span>
+              {!pathName.endsWith("/summary") && (
+                <span className="p-2 flex flex-row gap-2 rounded-xl bg-card/25 backdrop-blur supports-backdrop-filter:bg-card/45 border">
+                  <CreateReportDrawer />
+                </span>
+              )}
             </>
           ) : (
             <>
@@ -91,7 +93,6 @@ function Navbar() {
                   <Link href={"/login"}>
                     <Button variant={"default"} className={`border`}>
                       <LogIn />
-                      Signin
                     </Button>
                   </Link>
                 ) : (

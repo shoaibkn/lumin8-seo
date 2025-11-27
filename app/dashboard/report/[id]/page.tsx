@@ -39,7 +39,7 @@ import { useUser } from "@stackframe/stack";
 import { fetcher } from "@/lib/fetcher";
 import useSWR from "swr";
 import { scraping_jobs } from "@prisma/client";
-import { Badge } from "@/components/ui/badge";
+import { redirect } from "next/dist/server/api-utils";
 
 export default function ReportPage({
   params,
@@ -60,6 +60,7 @@ export default function ReportPage({
     { refreshInterval: () => (job?.status !== "COMPLETED" ? 2000 : 0) },
   );
 
+  const redirect = useRouter().push;
   useEffect(() => {
     console.log(data, error, isLoading);
     if (data) setJob(data.data[0]);
@@ -106,6 +107,10 @@ export default function ReportPage({
       }
     });
   };
+
+  if (!user) {
+    redirect("/");
+  }
 
   if (!id) {
     return (

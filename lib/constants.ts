@@ -7,19 +7,19 @@ export const SITE_CONFIG = {
   name: "Lumin8 SEO",
   tagline: "AI that makes SEO effortless.",
   description:
-    "An intuitive SEO platform powered by advanced AI models that optimize content, structure, and strategy in real time. No guesswork, no spreadsheets—just smart automation that helps you grow organically.",
-  url: "https://saasify.com",
+    "An intuitive SEO platform powered by advanced AI models that optimize content, structure, and strategy in real time. No guesswork, no spreadsheets - just smart automation that helps you grow organically.",
+  url: "https://seo.lumin8.in",
   ogImage: "/og-image.jpg",
   links: {
-    twitter: "https://twitter.com/lumin8-seo",
-    github: "https://github.com/lumin8-seo",
-    linkedin: "https://linkedin.com/company/lumin8-seo",
+    // twitter: "https://twitter.com/lumin8-seo",
+    github: "https://github.com/shoaibkn/lumin8-seo",
+    linkedin: "https://www.linkedin.com/in/shoaib-khan-313323167",
   },
 } as const;
 
 // Navigation
 export const NAVIGATION = {
-  logo: "SaaSify",
+  logo: "Lumin8 SEO",
   links: [
     { name: "Features", href: "#features" },
     { name: "Pricing", href: "#pricing" },
@@ -46,7 +46,7 @@ export const HERO = {
     sub: "With Smart Tools",
   },
   description:
-    "An intuitive SEO platform powered by advanced AI models that optimize content, structure, and strategy in real time. No guesswork, no spreadsheets—just smart automation that helps you grow organically.",
+    "An intuitive SEO platform powered by advanced AI models that optimize content, structure, and strategy in real time. No guesswork, no spreadsheets - just smart automation that helps you grow organically.",
   buttons: {
     primary: {
       text: "Start For Free",
@@ -167,7 +167,7 @@ export const FAQ = {
     {
       question: "How do the report charges work?",
       answer:
-        "You only pay per report—₹10 for Basic reports and ₹25 for Smart reports. There are no subscriptions, hidden fees, or long-term commitments.",
+        "You only pay per report - ₹10 for Basic reports and ₹25 for Smart reports. There are no subscriptions, hidden fees, or long-term commitments.",
     },
     {
       question: "What’s the difference between Basic and Smart reports?",
@@ -200,7 +200,7 @@ export const FAQ = {
 // Footer Section
 export const FOOTER = {
   company: {
-    name: "SaaSify",
+    name: "Lumin8 SEO",
     description: "The all-in-one platform for modern businesses.",
   },
   links: {

@@ -19,6 +19,8 @@ import { useUser } from "@stackframe/stack";
 import { scraping_jobs } from "@prisma/client";
 
 import AIChat from "@/components/AIChat";
+import AIChatSheet from "@/components/AIChatSheet";
+import { useRouter } from "next/navigation";
 
 interface ReportSummaryProps {
   params: Promise<{ id: string }>;
@@ -27,6 +29,7 @@ interface ReportSummaryProps {
 export default function ReportSummary({ params }: ReportSummaryProps) {
   const { id } = React.use(params);
   const user = useUser();
+  const redirect = useRouter().push;
 
   const [job, setJob] = React.useState<scraping_jobs | undefined>(undefined);
   const [seoReport, setSeoReport] = React.useState<SeoReport | undefined>(
@@ -43,6 +46,10 @@ export default function ReportSummary({ params }: ReportSummaryProps) {
     console.log(data.data[0].seoReport);
     setSeoReport(JSON.parse(data.data[0].seoReport));
   });
+
+  if (!user) {
+    redirect("/");
+  }
 
   useEffect(() => {
     if (id && user) {
@@ -107,7 +114,7 @@ export default function ReportSummary({ params }: ReportSummaryProps) {
         {job.requestType === "BASIC" ? (
           <AIChatUpsellCard />
         ) : (
-          <AIChat seoReportId={id} />
+          <AIChatSheet seoReportId={id} />
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
