@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { deductFromWallet } from "./wallet";
 import { Resend } from "resend";
 import { reportGeneratedEmail } from "@/lib/email";
+import { stackServerApp } from "@/stack/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -100,6 +101,8 @@ export const runAnalysis = async (jobId: string) => {
         status: "COMPLETED",
       },
     });
+    const user = await stackServerApp.getUser();
+    const userEmail = user?.primaryEmail || "hello@lumin8.in";
 
     if (jobOutput.seoReport) {
       const emailData = JSON.parse(jobOutput.seoReport);
@@ -111,7 +114,7 @@ export const runAnalysis = async (jobId: string) => {
       });
       resend.emails.send({
         from: "Lumin8 <noreply@lumin8.in>",
-        to: "hello@lumin8.in",
+        to: userEmail,
         subject: `Your SEO Report is here`,
         html: emailBody,
       });
