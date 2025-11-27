@@ -230,7 +230,7 @@ dark:before:shadow-[inset_0_1px_3px_rgba(255,255,255,0.05),inset_0_-1px_4px_rgba
                 {creditsUsed &&
                   reportsGenerated &&
                   creditsUsed > 0 &&
-                  reportsGenerated / creditsUsed}
+                  creditsUsed / reportsGenerated}
               </p>
             </div>
             <div className="text-center  flex flex-col gap-2 justify-center    p-2 rounded-lg bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm">
