@@ -82,7 +82,7 @@ const startScraping = async (
   }
 
   // Include the job ID in the webhook URL as a query parameter
-  const ENDPOINT = `https://dev.lumin8.in/api/webhook?jobId=${jobId}`;
+  const ENDPOINT = `${process.env.NEXT_PUBLIC_URL}/api/webhook?jobId=${jobId}`;
   const encodedEndpoint = encodeURIComponent(ENDPOINT);
 
   const url = `https://api.brightdata.com/datasets/v3/trigger?dataset_id=gd_m7dhdot1vw9a7gc1n&endpoint=${encodedEndpoint}&format=json&uncompressed_webhook=true&include_errors=true`;
